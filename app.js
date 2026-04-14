@@ -49,12 +49,13 @@
     }
   }
 
-  // ── Imgur直リンクからページURLを生成 ──
-  // "https://i.imgur.com/XXXXX.jpg" → "https://imgur.com/XXXXX"
-  function imgurPageUrl(directUrl) {
-    if (!directUrl) return null;
-    const m = directUrl.match(/i\.imgur\.com\/([a-zA-Z0-9]+)/);
-    return m ? "https://imgur.com/" + m[1] : null;
+  // ── X の埋め込みiframe URL生成 ──
+  // https://x.com/user/status/123 → https://platform.twitter.com/embed/Tweet.html?id=123
+  function xEmbedUrl(xUrl) {
+    if (!xUrl) return null;
+    const m = xUrl.match(/status\/(\d+)/);
+    if (!m) return null;
+    return "https://platform.twitter.com/embed/Tweet.html?id=" + m[1] + "&lang=ja";
   }
 
   // ── 要素取得 ──
@@ -79,6 +80,11 @@
   let currentItem = null;
   let scrollPos = 0;
 
+  // ── IDから画像データを取得 ──
+  function findById(id) {
+    return images.find((item) => String(item.id) === String(id));
+  }
+
   // ── カード生成 ──
   function createCard(item) {
     const card = document.createElement("div");
@@ -99,7 +105,6 @@
       </div>
     `;
 
-    // 画像ロード完了
     const img = card.querySelector("img");
     img.onload = () => {
       img.classList.remove("loading");
@@ -111,7 +116,9 @@
     };
 
     // 画像クリック → 詳細
-    card.querySelector(".card-img-wrap").addEventListener("click", () => openDetail(item));
+    card.querySelector(".card-img-wrap").addEventListener("click", () => {
+      location.hash = "detail/" + item.id;
+    });
 
     // 🏞️ コピー
     card.querySelector(".btn-ci").addEventListener("click", (e) => {
@@ -159,7 +166,7 @@
     countEl.textContent = `${filtered.length} / ${images.length} 枚`;
   }
 
-  // ── 詳細画面 ──
+  // ── 詳細画面を開く ──
   function openDetail(item) {
     currentItem = item;
     scrollPos = window.scrollY;
@@ -179,29 +186,13 @@
     // ⭐
     detailFav.textContent = isFav(item.id) ? "★" : "☆";
 
-    // Imgur 埋め込み（直リンクからページURLを生成）
-    const page = imgurPageUrl(item.imgur);
-    if (page) {
-      imgurEmbed.innerHTML = `<iframe src="${page}/embed?pub=true" height="400" scrolling="no" allowfullscreen></iframe>`;
-    } else {
-      imgurEmbed.innerHTML = `<img src="${item.imgur}" style="width:100%;border-radius:12px;">`;
-    }
+    // Imgur: 画像そのものを表示
+    imgurEmbed.innerHTML = `<img src="${item.imgur}" style="width:100%;border-radius:12px;">`;
 
-    // X 埋め込み
-    if (item.xUrl) {
-      xEmbed.innerHTML = `
-        <blockquote class="twitter-tweet" data-lang="ja">
-          <a href="${item.xUrl}"></a>
-        </blockquote>
-      `;
-      if (window.twttr && window.twttr.widgets) {
-        window.twttr.widgets.load(xEmbed);
-      } else {
-        const s = document.createElement("script");
-        s.src = "https://platform.twitter.com/widgets.js";
-        s.async = true;
-        xEmbed.appendChild(s);
-      }
+    // X: iframe で埋め込み
+    const embedSrc = xEmbedUrl(item.xUrl);
+    if (embedSrc) {
+      xEmbed.innerHTML = `<iframe src="${embedSrc}" style="width:100%;min-height:350px;border:none;border-radius:12px;" allowfullscreen></iframe>`;
     } else {
       xEmbed.innerHTML = `<p style="padding:16px;color:#999;">Xリンクなし</p>`;
     }
@@ -209,16 +200,37 @@
     listView.style.display = "none";
     detailView.classList.remove("hidden");
     window.scrollTo(0, 0);
-    history.pushState({ detail: item.id }, "");
   }
 
+  // ── 詳細画面を閉じる ──
   function closeDetail() {
     detailView.classList.add("hidden");
     listView.style.display = "";
     imgurEmbed.innerHTML = "";
     xEmbed.innerHTML = "";
+    currentItem = null;
     window.scrollTo(0, scrollPos);
     render();
+  }
+
+  // ── ハッシュルーティング ──
+  function handleRoute() {
+    const hash = location.hash;
+    const match = hash.match(/^#detail\/(\d+)$/);
+
+    if (match) {
+      const item = findById(match[1]);
+      if (item) {
+        openDetail(item);
+      } else {
+        location.hash = "";
+      }
+    } else {
+      // 一覧表示
+      if (!detailView.classList.contains("hidden")) {
+        closeDetail();
+      }
+    }
   }
 
   // ── イベント ──
@@ -232,11 +244,7 @@
   });
 
   backBtn.addEventListener("click", () => {
-    if (history.state && history.state.detail) {
-      history.back();
-    } else {
-      closeDetail();
-    }
+    location.hash = "";
   });
 
   detailFav.addEventListener("click", () => {
@@ -254,15 +262,12 @@
     if (currentItem) copyText(currentItem.xUrl, "Xリンク");
   });
 
-  // ブラウザバック対応
-  window.addEventListener("popstate", () => {
-    if (!detailView.classList.contains("hidden")) {
-      closeDetail();
-    }
-  });
+  // ハッシュ変化を監視
+  window.addEventListener("hashchange", handleRoute);
 
-  // ── 初期描画 ──
+  // ── 初期化 ──
   render();
+  handleRoute(); // URLに #detail/X があれば直接開く
 
   // ── Service Worker 登録 ──
   if ("serviceWorker" in navigator) {
