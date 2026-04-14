@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<!-- ===== トースト通知 ===== -->
+<!-- トースト -->
 <div id="toast" class="toast" aria-live="polite"></div>
 
 <!-- ===== 画面①: 一覧 ===== -->
@@ -25,8 +25,19 @@
     </div>
     <p class="count" id="count"></p>
   </header>
-
   <main class="grid" id="grid"></main>
+</div>
+
+<!-- ===== フォルダモーダル ===== -->
+<div id="folder-modal" class="modal-overlay hidden">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <span id="folder-modal-title" class="modal-title">📁 フォルダ名</span>
+      <button id="folder-modal-close" class="modal-close">✕</button>
+    </div>
+    <div class="grid modal-grid" id="folder-grid"></div>
+  </div>
 </div>
 
 <!-- ===== 画面②: 詳細 ===== -->
@@ -35,30 +46,35 @@
     <button id="back-btn" class="btn-back">← 戻る</button>
     <button id="detail-fav" class="btn-detail-fav">☆</button>
   </div>
-
   <div class="detail-body">
     <img id="detail-img" class="detail-img" src="" alt="">
     <h2 id="detail-title" class="detail-title"></h2>
     <div id="detail-tags" class="detail-tags"></div>
-
     <div class="detail-actions">
       <button id="copy-imgur" class="btn-action">🏞️ Imgurリンクをコピー</button>
       <button id="copy-x" class="btn-action">𝕏 Xリンクをコピー</button>
     </div>
-
     <section class="embed-section">
       <h3>Imgur</h3>
       <div id="imgur-embed" class="embed-wrap"></div>
     </section>
-
     <section class="embed-section">
       <h3>X ポスト</h3>
       <div id="x-embed" class="embed-wrap"></div>
+      <a id="x-open" class="btn-action btn-x-open" href="#" target="_blank" rel="noopener">𝕏 Xで開く ↗</a>
     </section>
   </div>
 </div>
 
+<!-- ===== スクリプト読み込み ===== -->
+<!-- ① まず data.js（registerFolder関数を定義） -->
 <script src="data.js"></script>
+
+<!-- ② 次にフォルダファイル（追加したらここに1行追加） -->
+<script src="folders/iminai.js"></script>
+<!-- <script src="folders/次のフォルダ.js"></script> -->
+
+<!-- ③ 最後に app.js -->
 <script src="app.js"></script>
 </body>
 </html>
