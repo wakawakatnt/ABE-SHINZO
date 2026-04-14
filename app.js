@@ -236,7 +236,7 @@
     return card;
   }
 
-  /* ============================================
+   /* ============================================
    *  メイン描画
    * ============================================ */
   function render() {
@@ -247,35 +247,8 @@
     const fragment = document.createDocumentFragment();
     let totalCount = 0;
 
-    // ── フォルダ表示 ──
-    if (!showFavOnly) {
-      folders.forEach(folder => {
-        const folderImages = getImagesInFolder(folder.id);
-        if (query) {
-          // 検索時：フォルダ内にマッチする画像があるか
-          const hasMatch = folderImages.some(item => {
-            const h = (item.title + " " + (item.tags || []).join(" ") + " " + folder.name).toLowerCase();
-            return h.includes(query);
-          });
-          if (!hasMatch) return;
-        }
-        if (folderImages.length > 0) {
-          fragment.appendChild(createFolderCard(folder));
-          totalCount += folderImages.length;
-        }
-      });
-    }
-
-    // ── 単体画像（フォルダに属さない） ──
-    const loose = getLooseImages().filter(item => {
-      if (showFavOnly && !favs[item.id]) return false;
-      if (!query) return true;
-      const h = (item.title + " " + (item.tags || []).join(" ")).toLowerCase();
-      return h.includes(query);
-    });
-
-    // ⭐フィルター時：フォルダ内の画像も単体として出す
     if (showFavOnly) {
+      // ── ⭐フィルター時：フォルダ関係なく全画像からお気に入りを表示 ──
       const favImages = images.filter(item => {
         if (!favs[item.id]) return false;
         if (!query) return true;
@@ -284,7 +257,27 @@
       });
       favImages.forEach(item => fragment.appendChild(createCard(item)));
       totalCount = favImages.length;
+
+    } else if (query) {
+      // ── 検索時：フォルダ無視、全画像からマッチするものをカード表示 ──
+      const matched = images.filter(item => {
+        const h = (item.title + " " + (item.tags || []).join(" ")).toLowerCase();
+        return h.includes(query);
+      });
+      matched.forEach(item => fragment.appendChild(createCard(item)));
+      totalCount = matched.length;
+
     } else {
+      // ── 通常表示：フォルダ + 単体画像 ──
+      folders.forEach(folder => {
+        const folderImages = getImagesInFolder(folder.id);
+        if (folderImages.length > 0) {
+          fragment.appendChild(createFolderCard(folder));
+          totalCount += folderImages.length;
+        }
+      });
+
+      const loose = getLooseImages();
       loose.forEach(item => fragment.appendChild(createCard(item)));
       totalCount += loose.length;
     }
@@ -292,6 +285,7 @@
     grid.appendChild(fragment);
     countEl.textContent = `${totalCount} / ${images.length} 枚`;
   }
+
 
   /* ============================================
    *  フォルダモーダル
