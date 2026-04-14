@@ -30,9 +30,7 @@ body {
   align-items: center;
 }
 
-.search-box {
-  flex: 1;
-}
+.search-box { flex: 1; }
 
 .search-box input {
   width: 100%;
@@ -44,9 +42,7 @@ body {
   transition: border-color 0.2s;
 }
 
-.search-box input:focus {
-  border-color: #b71c1c;
-}
+.search-box input:focus { border-color: #b71c1c; }
 
 .btn-fav-filter {
   padding: 9px 14px;
@@ -79,19 +75,11 @@ body {
   padding: 10px;
 }
 
-@media (min-width: 600px) {
-  .grid { grid-template-columns: repeat(3, 1fr); }
-}
+@media (min-width: 600px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 900px)  { .grid { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 1200px) { .grid { grid-template-columns: repeat(5, 1fr); } }
 
-@media (min-width: 900px) {
-  .grid { grid-template-columns: repeat(4, 1fr); }
-}
-
-@media (min-width: 1200px) {
-  .grid { grid-template-columns: repeat(5, 1fr); }
-}
-
-/* ===== カード ===== */
+/* ===== カード共通 ===== */
 .card {
   background: #fff;
   border-radius: 12px;
@@ -100,14 +88,12 @@ body {
   transition: transform 0.15s, box-shadow 0.15s;
 }
 
-.card:active {
-  transform: scale(0.97);
-}
+.card:active { transform: scale(0.97); }
 
 .card-img-wrap {
   position: relative;
   width: 100%;
-  padding-top: 100%; /* 1:1 */
+  padding-top: 100%;
   overflow: hidden;
   cursor: pointer;
   background: #eee;
@@ -116,19 +102,14 @@ body {
 .card-img-wrap img {
   position: absolute;
   top: 0; left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   object-fit: cover;
   transition: opacity 0.3s;
 }
 
-.card-img-wrap img.loading {
-  opacity: 0;
-}
+.card-img-wrap img.loading { opacity: 0; }
 
-.card-bottom {
-  padding: 8px 10px;
-}
+.card-bottom { padding: 8px 10px; }
 
 .card-title {
   font-size: 0.75rem;
@@ -141,7 +122,6 @@ body {
 
 .card-icons {
   display: flex;
-  gap: 0;
   justify-content: space-around;
 }
 
@@ -158,13 +138,126 @@ body {
   line-height: 1;
 }
 
-.card-icon-btn:active {
-  background: #f0f0f0;
+.card-icon-btn:active { background: #f0f0f0; }
+
+/* ===== フォルダカード ===== */
+.folder-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.15s;
 }
 
-.card-icon-btn.fav-active {
-  filter: none;
+.folder-card:active { transform: scale(0.97); }
+
+.folder-thumb {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+  background: #e8e8e8;
 }
+
+/* 4枚合成サムネイル用 canvas */
+.folder-thumb canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+.folder-bottom {
+  padding: 8px 10px;
+}
+
+.folder-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder-count {
+  font-size: 0.7rem;
+  color: #999;
+  margin-top: 2px;
+}
+
+/* ===== フォルダモーダル ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.hidden { display: none; }
+
+.modal-backdrop {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 20px;
+  width: 92vw;
+  max-width: 800px;
+  max-height: 85vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+  animation: modalIn 0.25s ease;
+}
+
+@keyframes modalIn {
+  from { transform: scale(0.92); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  z-index: 1;
+}
+
+.modal-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: #f0f0f0;
+  border: none;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.modal-close:active { background: #ddd; }
+
+.modal-grid { padding: 12px; }
 
 /* ===== 詳細画面 ===== */
 .detail-view {
@@ -176,9 +269,7 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-.detail-view.hidden {
-  display: none;
-}
+.detail-view.hidden { display: none; }
 
 .detail-header {
   display: flex;
@@ -202,9 +293,7 @@ body {
   transition: all 0.15s;
 }
 
-.btn-back:active {
-  background: #f5f5f5;
-}
+.btn-back:active { background: #f5f5f5; }
 
 .btn-detail-fav {
   background: none;
@@ -262,17 +351,17 @@ body {
   font-size: 0.95rem;
   cursor: pointer;
   text-align: center;
+  text-decoration: none;
+  color: #333;
+  display: block;
   transition: all 0.15s;
 }
 
-.btn-action:active {
-  background: #f5f5f5;
-  border-color: #ccc;
-}
+.btn-action:active { background: #f5f5f5; border-color: #ccc; }
 
-.embed-section {
-  margin-bottom: 24px;
-}
+.btn-x-open { margin-top: 8px; }
+
+.embed-section { margin-bottom: 24px; }
 
 .embed-section h3 {
   font-size: 0.9rem;
@@ -286,7 +375,7 @@ body {
   background: #fafafa;
   border-radius: 12px;
   overflow: hidden;
-  min-height: 100px;
+  min-height: 60px;
 }
 
 .embed-wrap iframe {
@@ -318,7 +407,7 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
-/* ===== 画像読み込みスピナー ===== */
+/* ===== ローディングスピナー ===== */
 .card-img-wrap::before {
   content: "";
   position: absolute;
@@ -332,15 +421,11 @@ body {
   z-index: 1;
 }
 
-.card-img-wrap.loaded::before {
-  display: none;
-}
+.card-img-wrap.loaded::before { display: none; }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* ===== スクロールバー（PC） ===== */
+/* ===== スクロールバー ===== */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
