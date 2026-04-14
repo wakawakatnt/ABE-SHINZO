@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>安倍晋三画像集</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== トースト通知 ===== -->
+<div id="toast" class="toast" aria-live="polite"></div>
+
+<!-- ===== 画面①: 一覧 ===== -->
+<div id="list-view">
+  <header class="header">
+    <h1>🇯🇵 安倍晋三画像集</h1>
+    <div class="header-controls">
+      <div class="search-box">
+        <input type="text" id="search" placeholder="🔍 検索...">
+      </div>
+      <button id="fav-filter" class="btn-fav-filter" title="お気に入りだけ表示">
+        ⭐ <span id="fav-filter-label">すべて</span>
+      </button>
+    </div>
+    <p class="count" id="count"></p>
+  </header>
+
+  <main class="grid" id="grid"></main>
+</div>
+
+<!-- ===== 画面②: 詳細 ===== -->
+<div id="detail-view" class="detail-view hidden">
+  <div class="detail-header">
+    <button id="back-btn" class="btn-back">← 戻る</button>
+    <button id="detail-fav" class="btn-detail-fav">☆</button>
+  </div>
+
+  <div class="detail-body">
+    <img id="detail-img" class="detail-img" src="" alt="">
+    <h2 id="detail-title" class="detail-title"></h2>
+    <div id="detail-tags" class="detail-tags"></div>
+
+    <div class="detail-actions">
+      <button id="copy-imgur" class="btn-action">🏞️ Imgurリンクをコピー</button>
+      <button id="copy-x" class="btn-action">𝕏 Xリンクをコピー</button>
+    </div>
+
+    <section class="embed-section">
+      <h3>Imgur</h3>
+      <div id="imgur-embed" class="embed-wrap"></div>
+    </section>
+
+    <section class="embed-section">
+      <h3>X ポスト</h3>
+      <div id="x-embed" class="embed-wrap"></div>
+    </section>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
