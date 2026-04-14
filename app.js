@@ -37,7 +37,6 @@
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(() => toast("✓ " + label + " をコピーしました"));
     } else {
-      // フォールバック
       const ta = document.createElement("textarea");
       ta.value = text;
       ta.style.position = "fixed";
@@ -48,6 +47,14 @@
       document.body.removeChild(ta);
       toast("✓ " + label + " をコピーしました");
     }
+  }
+
+  // ── Imgur直リンクからページURLを生成 ──
+  // "https://i.imgur.com/XXXXX.jpg" → "https://imgur.com/XXXXX"
+  function imgurPageUrl(directUrl) {
+    if (!directUrl) return null;
+    const m = directUrl.match(/i\.imgur\.com\/([a-zA-Z0-9]+)/);
+    return m ? "https://imgur.com/" + m[1] : null;
   }
 
   // ── 要素取得 ──
@@ -172,20 +179,21 @@
     // ⭐
     detailFav.textContent = isFav(item.id) ? "★" : "☆";
 
-    // Imgur 埋め込み
-    // Imgur の embed: imgurPage の URL + /embed?pub=true
-    imgurEmbed.innerHTML = `<iframe src="${item.imgurPage}/embed?pub=true" height="400" scrolling="no" allowfullscreen></iframe>`;
+    // Imgur 埋め込み（直リンクからページURLを生成）
+    const page = imgurPageUrl(item.imgur);
+    if (page) {
+      imgurEmbed.innerHTML = `<iframe src="${page}/embed?pub=true" height="400" scrolling="no" allowfullscreen></iframe>`;
+    } else {
+      imgurEmbed.innerHTML = `<img src="${item.imgur}" style="width:100%;border-radius:12px;">`;
+    }
 
     // X 埋め込み
-    // X の embed は oEmbed を使うか、twitterのwidgets.jsを使う
-    const xId = extractXId(item.xUrl);
-    if (xId) {
+    if (item.xUrl) {
       xEmbed.innerHTML = `
         <blockquote class="twitter-tweet" data-lang="ja">
           <a href="${item.xUrl}"></a>
         </blockquote>
       `;
-      // Twitter widgets.js を再実行
       if (window.twttr && window.twttr.widgets) {
         window.twttr.widgets.load(xEmbed);
       } else {
@@ -210,14 +218,7 @@
     imgurEmbed.innerHTML = "";
     xEmbed.innerHTML = "";
     window.scrollTo(0, scrollPos);
-    // お気に入り変更があったかもしれないので再描画
     render();
-  }
-
-  function extractXId(url) {
-    if (!url) return null;
-    const m = url.match(/status\/(\d+)/);
-    return m ? m[1] : null;
   }
 
   // ── イベント ──
