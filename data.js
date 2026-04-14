@@ -30,15 +30,15 @@ const images = [
     title: "トランプ　銃撃　遺影",
     imgur: "https://i.imgur.com/uFmtVf0.jpeg",
     xUrl: "https://x.com/GZ8FxNhlHi45022/status/2044051922102169897",
-    tags: ["トランプ", "銃撃", "遺影"],
+    tags: ["トランプ","銃撃","遺影"],
   },
   // ── サンプル2 ──
   {
     id: 2,
-    title: "サンプル画像2",
-    imgur: "https://i.imgur.com/example2.jpg",
-    xUrl: "https://x.com/example/status/222222222",
-    tags: ["サンプル"],
+    title: "全世界　宣戦布告　国交断絶　テコンダー朴",
+    imgur: "https://i.imgur.com/uRMWz7j.jpeg",
+    xUrl: "https://x.com/GZ8FxNhlHi45022/status/2044052040222159358",
+    tags: ["テコ朴","宣戦布告","全世界","全世界193ヵ国に対し","テコンダー朴","193","国交断絶"],
   },
 
   // ★ ここに追加していく ★
