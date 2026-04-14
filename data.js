@@ -40,6 +40,14 @@ const images = [
     xUrl: "https://x.com/GZ8FxNhlHi45022/status/2044052040222159358",
     tags: ["テコ朴","宣戦布告","全世界","全世界193ヵ国に対し","テコンダー朴","193","国交断絶"],
   },
+  {
+    id: 3,
+    title: "いいかげんなことばっかり言うんじゃないよ",
+    imgur: "https://i.imgur.com/wvlW1vb.jpeg",
+    xUrl: "https://x.com/GZ8FxNhlHi45022/status/2044051427220500794",
+    tags: ["加減","いいかげんなことばっかり言うんじゃないよ"],
+  },
+  
 
   // ★ ここに追加していく ★
 ];
