@@ -27,10 +27,10 @@ const images = [
   // ── サンプル1 ──
   {
     id: 1,
-    title: "サンプル画像1",
-    imgur: "https://i.imgur.com/example1.jpg",
-    xUrl: "https://x.com/example/status/111111111",
-    tags: ["サンプル"],
+    title: "トランプ　銃撃　遺影",
+    imgur: "https://i.imgur.com/uFmtVf0.jpeg",
+    xUrl: "https://x.com/GZ8FxNhlHi45022/status/2044051922102169897",
+    tags: ["トランプ", "銃撃", "遺影"],
   },
   // ── サンプル2 ──
   {
