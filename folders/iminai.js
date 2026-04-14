@@ -24,7 +24,7 @@ registerFolder({
       id: 101,
       title: "意味のない質問だよ1",
       imgur: "https://i.imgur.com/A7VpNQZ.png",
-      xUrl: "https://x.com/GZ8FxNhlHi45022/status/2044067234482696274",
+      xUrl: "https://x.com/GZ8FxNhlHi45022/status/2044067336685269394",
       tags: ["意味の無い", "意味のない質問だよ"],
     },
     {
@@ -38,7 +38,7 @@ registerFolder({
       id: 103,
       title: "意味のない質問だよ3",
       imgur: "https://i.imgur.com/3aBkv2K.jpeg",
-      xUrl: "https://x.com/GZ8FxNhlHi45022/status/2044067336685269394",
+      xUrl: "https://x.com/GZ8FxNhlHi45022/status/2044067234482696274",
       tags: ["意味の無い", "意味のない質問だよ"],
     },
     // ★ ここに追加していく ★
